@@ -11,7 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 /**
@@ -40,7 +41,7 @@ public class AuthorizeController {
     @GetMapping("/callback")
     public String callBack(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
-                           HttpServletRequest request) {
+                           HttpServletResponse response) {
 
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(clientId);
@@ -52,17 +53,23 @@ public class AuthorizeController {
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser = githubProvider.getUser(accessToken);
 
+        /*
+            当使用github登录成功以后
+            会获取用户信息，生成一个token
+            将token放入user对象，存入数据库
+            并且将token放入cookie
+         */
         // 如果用户不为空，说明登陆成功
         if (githubUser != null) {
             User user = new User();
-            user.setToken(UUID.randomUUID().toString());
+            String token = UUID.randomUUID().toString();
+            user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
             userMapper.insert(user);
-            // 写 cookie 和 session
-            request.getSession().setAttribute("user", githubUser);
+            response.addCookie(new Cookie("token", token));
             return "redirect:/"; //重定向到 index 页面
         } else {
             // 登录失败，重新登录
