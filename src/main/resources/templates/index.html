@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="www.thymeleaf.org" lang="en">
+<html lang="en">
 <head>
     <title>花卉交流</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -55,17 +55,20 @@
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
             <h2><span class="glyphicon glyphicon-list" aria-hidden="true"></span>发现</h2>
             <hr>
-            <div class="media">
+            <div class="media" th:each="prod : ${question}">
                 <div class="media-left">
                     <a href="#">
-                        <!-- todo -->
-                        <img class="media-object img-circle" src="https://avatars.githubusercontent.com/u/92669548?v=4">
+                        <img class="media-object img-circle" th:src="@{question.user.avatarUrl}">
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading">第一次养植物应该注意些什么？</h4>
-                    <p>选择适合的植物&nbsp;了解植物需求&nbsp;掌握浇水技巧&nbsp;合适的土壤和容器&nbsp;定期观察和照顾&nbsp;学会调整
-                    </p>
+                    <h4 class="media-heading" th:text="${question.title}"></h4>
+                    <span th:text="${question.description}"></span><br>
+                    <span class="text-desc">
+                        <span th:text="${question.commentCount}">个回复</span>
+                        <span th:text="${question.viewCount}">个回复</span>
+                        <span th:text="1小时前">个回复</span>
+                    </span>
                 </div>
             </div>
         </div>
