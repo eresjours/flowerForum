@@ -60,7 +60,7 @@ public class AuthorizeController {
             并且将token放入cookie
          */
         // 如果用户不为空，说明登陆成功
-        if (githubUser != null) {
+        if (githubUser != null && githubUser.getId() != null) {
             User user = new User();
             String token = UUID.randomUUID().toString();
             user.setToken(token);
