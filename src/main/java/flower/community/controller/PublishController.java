@@ -33,15 +33,15 @@ public class PublishController {
 
     @PostMapping("/publish")
     public String doPublish(
-            @RequestParam("title") String title,
-            @RequestParam("description") String description,
-            @RequestParam("tag") String tag,
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "tag", required = false) String tag,
             HttpServletRequest request,
             Model model
             ) {
 
         /*
-            获取前端的相关信息放入 model
+            获取前端的相关信息放入 model，为了回显到页面上
          */
         model.addAttribute("title", title);
         model.addAttribute("description", description);
@@ -64,8 +64,17 @@ public class PublishController {
             return "publish";
         }
 
+        /*
+            判断用户是否登录
+            通过token拿到用户存在数据库中的user信息
+            如果存在就绑定到session上去
+         */
         User user = null;
         Cookie[] cookies = request.getCookies();
+        if (cookies == null && cookies.length == 0) {
+            model.addAttribute("error", "登陆失败，cookie为空");
+            return "publish";
+        }
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("token")) {
                 String token = cookie.getValue();
@@ -83,10 +92,14 @@ public class PublishController {
             return "publish";
         }
 
+        /*
+            构建question对象
+            创建questionMapper，插入到数据库中
+         */
         Question question = new Question();
         question.setTitle(title);
-        question.setTitle(description);
-        question.setTitle(tag);
+        question.setDescription(description);
+        question.setTag(tag);
         question.setCreator(user.getId());
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified(question.getGmtCreate());
