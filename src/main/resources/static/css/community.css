@@ -21,3 +21,11 @@ body {
     font-weight: normal;
     color: #999;
 }
+
+.jumbotron {
+    background: url(https://cdn.mos.cms.futurecdn.net/flexiimages/uumx06zn1g1695298453.png) round;
+}
+
+.profile .section {
+    margin-top: 20px;
+}

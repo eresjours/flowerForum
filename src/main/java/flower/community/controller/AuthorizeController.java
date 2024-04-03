@@ -62,7 +62,9 @@ public class AuthorizeController {
         // 如果用户不为空，说明登陆成功
         if (githubUser != null && githubUser.getId() != null) {
             User user = new User();
-            String token = UUID.randomUUID().toString();
+            // TODO
+//            String token = UUID.randomUUID().toString();
+            String token = String.valueOf(githubUser.getId());
             user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
