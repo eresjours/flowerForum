@@ -3,6 +3,7 @@ package flower.community.mapper;
 import flower.community.model.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -17,6 +18,10 @@ public interface QuestionMapper {
     @Insert("INSERT INTO QUESTION (TITLE, DESCRIPTION, GMT_CREATE, GMT_MODIFIED, CREATOR, TAG) VALUES (#{title}, #{description}, #{gmtCreate}, #{gmtModified}, #{creator}, #{tag})")
     void create(Question question);
 
-    @Select("SELECT * FROM QUESTION")
-    List<Question> list();
+    // 跳过offset条数据, 查询size条数据
+    @Select("SELECT * FROM QUESTION LIMIT #{offset}, #{size}")
+    List<Question> list(@Param(value = "offset") Integer offset, @Param(value = "size") Integer size);
+
+    @Select("SELECT COUNT(1) FROM QUESTION")
+    Integer count();
 }
