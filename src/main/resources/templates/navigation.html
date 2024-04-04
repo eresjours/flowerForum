@@ -45,7 +45,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;个人中心</a></li>
                         <li><a href="/profile/questions"><span class="glyphicon glyphicon-console" aria-hidden="true"></span>&nbsp;我的问题</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;退出登录</a></li>
+                        <li><a href="/logout"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;退出登录</a></li>
                     </ul>
                 </li>
                 <li th:if="${session.user == null}"><a href="https://github.com/login/oauth/authorize?client_id=09300ad66c4cdb5affae&redirect_uri=http://localhost:8887/callback&scope=user&state=1">登录</a></li>
