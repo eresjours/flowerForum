@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>花卉交流</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"/>
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/community.css"/>
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" type="application/javascript"></script>
+</head>
+<body>
+<div th:fragment="figure">
+    <div class="pio-container right">
+        <div class="pio-action"></div>
+        <canvas id="pio" width="200" height="250"></canvas>
+    </div>
+    <link rel="stylesheet" href="/figure/css/pio.css">
+    <script src="/figure/js/pio.js"></script>
+    <script src="/figure/js/l2d.js"></script>
+    <script>
+        var pio = new Paul_Pio({
+            "mode": "fixed",
+            "tips": true,
+            "hidden": true,
+            "content": {
+                "welcome": ["欢迎来到阿牛的网站！", "博主每天都有些折腾记录，欢迎前往他的小窝阅读~"],
+            },
+            "model": [
+                "/figure/live2d-widget-models/live2d-widget-model-miku/assets/miku.model.json", //初音
+                "/figure/live2d-widget-models/live2d-widget-model-shizuku/assets/shizuku.model.json",// 萌娘
+                "/figure/live2d-widget-models/live2d-widget-model-chitose/assets/chitose.model.json",
+                "/figure/live2d-widget-models/live2d-widget-model-koharu/assets/koharu.model.json",
+                "/figure/live2d-widget-models/live2d-widget-model-haru/01/assets/haru01.model.json",
+                "/figure/live2d-widget-models/live2d-widget-model-wanko/assets/wanko.model.json",
+                "/figure/live2d-widget-models/live2d-widget-model-vert/vert_classic/vert_classic.model.json",
+                "/figure/live2d-widget-models/live2d-widget-model-nepgear_extra/nepgear_extra/nepgear_extra.model.json",
+                "/figure/live2d-widget-models/live2d-widget-model-haruto/assets/haruto.model.json",
+                "/figure/live2d-widget-models/live2d-widget-model-haru/02/assets/haru02.model.json",
+                "/figure/live2d-widget-models/live2d-widget-model-histoire/histoire/histoire.model.json",
+                "/figure/live2d-widget-models/live2d-widget-model-blanc_normal/blanc_normal/blanc_normal.model.json",
+            ]
+        });
+    </script>
+</div>
+</body>
+</html>

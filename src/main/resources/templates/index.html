@@ -14,7 +14,10 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" type="application/javascript"></script>
 </head>
 <body>
+<!-- 插入导航栏 -->
 <div th:insert="~{navigation :: nav}"></div>
+<!-- 插入虚拟形象 -->
+<div th:insert="~{figure :: figure}"></div>
 <div class="jumbotron">
     <div class="jumbotron-text">
         <h1>Hello, world!</h1>
@@ -37,7 +40,8 @@
                     <h4 class="media-heading">
                         <a th:href="@{'question/'+${question.id}}" th:text="${question.title}"></a>
                     </h4>
-                    <span th:text="${question.description}"></span><br>
+<!--                    <span th:text="${question.description}"></span><br>-->
+                    <span th:text="${question.tag}"></span><br>
                     <span class="text-desc">
                         <span th:text="${question.commentCount}"></span>个回复&nbsp;
                         <span th:text="${question.viewCount}"></span>次浏览&nbsp;
