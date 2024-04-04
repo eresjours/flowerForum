@@ -2,10 +2,7 @@ package flower.community.mapper;
 
 import flower.community.Datatransfermodel.QuestionDTO;
 import flower.community.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -35,4 +32,7 @@ public interface QuestionMapper {
 
     @Select("SELECT * FROM QUESTION WHERE ID = #{id}")
     Question getById(@Param("id") Integer id);
+
+    @Update("UPDATE QUESTION SET TITLE = #{title}, DESCRIPTION = #{description}, GMT_MODIFIED = #{gmtModified}, TAG = #{tag} WHERE ID = #{id}")
+    void update(Question question);
 }

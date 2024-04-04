@@ -116,4 +116,16 @@ public class QuestionService {
         questionDTO.setUser(user);
         return questionDTO;
     }
+
+    public void createOrUpdate(Question question) {
+
+        if (question.getId() == null) { // 如果 id 为空，说明是第一次创建
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.create(question);
+        } else {    // 如果存在，说明是对question进行修改
+            question.setGmtModified(System.currentTimeMillis());    //对修改时间进行更新
+            questionMapper.update(question);
+        }
+    }
 }
