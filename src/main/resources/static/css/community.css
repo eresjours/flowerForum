@@ -29,3 +29,29 @@ body {
 .profile .section {
     margin-top: 20px;
 }
+
+/*搜索框*/
+.bar form {
+    height: 42px;
+}
+.bar input {
+    width: 250px;
+    border-radius: 42px;
+    border: 2px solid #324B4E;
+    background: #F9F0DA;
+    transition: .3s linear;
+    float: right;
+}
+.bar input:focus {
+    width: 300px;
+}
+.bar button {
+    top: -2px;
+    right: 0;
+    border: none;
+}
+
+.community-menu {
+    color: #999;
+    font-size: 13px;
+}

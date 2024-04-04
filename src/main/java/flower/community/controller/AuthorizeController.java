@@ -2,9 +2,9 @@ package flower.community.controller;
 
 import flower.community.Datatransfermodel.AccessTokenDTO;
 import flower.community.Datatransfermodel.GithubUser;
-import flower.community.mapper.UserMapper;
 import flower.community.model.User;
 import flower.community.provider.GithubProvider;
+import flower.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -36,7 +36,7 @@ public class AuthorizeController {
     private String redirectUri;
 
     @Autowired
-    private UserMapper userMapper;
+    private UserService userService;
 
     @GetMapping("/callback")
     public String callBack(@RequestParam(name = "code") String code,
@@ -62,16 +62,19 @@ public class AuthorizeController {
         // 如果用户不为空，说明登陆成功
         if (githubUser != null && githubUser.getId() != null) {
             User user = new User();
-            // TODO
-//            String token = UUID.randomUUID().toString();
-            String token = String.valueOf(githubUser.getId());
+            String token = UUID.randomUUID().toString();
+//            String token = String.valueOf(githubUser.getId());
             user.setToken(token);
             user.setName(githubUser.getName());
+            /*
+                如果通过数据库能查到accountId等于当前登录的accountId的时候
+                就把数据库的token进行更新
+                如果没有就进行插入操作
+             */
             user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(githubUser.getAvatarUrl());
-            userMapper.insert(user);
+            userService.createOrUpdate(user);
+//            userMapper.insert(user);
             response.addCookie(new Cookie("token", token));
             return "redirect:/"; //重定向到 index 页面
         } else {

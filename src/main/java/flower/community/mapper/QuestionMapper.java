@@ -1,5 +1,6 @@
 package flower.community.mapper;
 
+import flower.community.Datatransfermodel.QuestionDTO;
 import flower.community.model.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -30,4 +31,8 @@ public interface QuestionMapper {
 
     @Select("SELECT COUNT(1) FROM QUESTION WHERE CREATOR = #{userId}")
     Integer countByUserId(@Param(value = "userId") Integer userId);
+
+
+    @Select("SELECT * FROM QUESTION WHERE ID = #{id}")
+    Question getById(@Param("id") Integer id);
 }

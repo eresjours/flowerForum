@@ -20,7 +20,7 @@
 <div class="container-fluid main profile">
     <div class="row">
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-            <h3><span class="glyphicon glyphicon-th-large" aria-hidden="true" th:text="${sectionName}"></span></h3>
+            <h3><span class="glyphicon glyphicon-th-large" aria-hidden="true"><span th:text="${sectionName}" style="margin-left: 5px"></span></span></h3>
             <hr>
             <div class="media" th:each="question : ${pagination.questions}">
                 <div class="media-left">
@@ -29,7 +29,9 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${question.title}"></h4>
+                    <h4 class="media-heading">
+                        <a th:href="@{'question/'+${question.id}}" th:text="${question.title}"></a>
+                    </h4>
 <!--                    <span th:text="${question.description}"></span><br>-->
                     <span class="text-desc">
                         <span th:text="${question.commentCount}"></span>个回复&nbsp;

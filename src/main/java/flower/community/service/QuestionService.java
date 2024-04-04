@@ -106,4 +106,14 @@ public class QuestionService {
 
         return paginationDTO;
     }
+
+    public QuestionDTO getById(Integer id) {
+        Question question = questionMapper.getById(id);
+        QuestionDTO questionDTO = new QuestionDTO();
+        // copyProperties() 方法将从 question 对象所有属性复制到 questionDTO 对象
+        BeanUtils.copyProperties(question, questionDTO);
+        User user = userMapper.findByID(question.getCreator());
+        questionDTO.setUser(user);
+        return questionDTO;
+    }
 }

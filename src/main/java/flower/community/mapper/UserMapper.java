@@ -1,10 +1,7 @@
 package flower.community.mapper;
 
 import flower.community.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 /**
  * @author WsW
@@ -21,4 +18,10 @@ public interface UserMapper {
 
     @Select("SELECT * FROM USER WHERE ID = #{id}")
     User findByID(@Param("id") Integer creator);
+
+    @Select("SELECT * FROM USER WHERE ACCOUNT_ID = #{accountId}")
+    User findByAccountId(@Param("accountId") String accountId);
+
+    @Update("UPDATE USER SET NAME=#{name}, TOKEN=#{token}, GMT_MODIFIED=#{gmtModified}, AVATAR_URL=#{avatarUrl} WHERE ACCOUNT_ID=#{accountId}")
+    void update(User User);
 }
