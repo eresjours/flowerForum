@@ -136,4 +136,11 @@ public class QuestionService {
             }
         }
     }
+
+    /*
+        增加阅读数操作
+     */
+    public void incView(Integer id) {
+        questionMapper.updateViewCount(id);
+    }
 }

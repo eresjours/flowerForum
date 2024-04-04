@@ -19,11 +19,15 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
+    /*
+        进入对应问题的处理
+     */
     @GetMapping("/question/{id}")
     public String question(@PathVariable(name = "id") Integer id,
                            Model model) {
 
         QuestionDTO questionDTO = questionService.getById(id);
+        questionService.incView(questionDTO.getId());    // 增加阅读数
         model.addAttribute("question", questionDTO);
         return "question";
     }
