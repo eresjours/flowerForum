@@ -1,6 +1,5 @@
 package flower.community.mapper;
 
-import flower.community.Datatransfermodel.QuestionDTO;
 import flower.community.model.Question;
 import org.apache.ibatis.annotations.*;
 
@@ -34,5 +33,5 @@ public interface QuestionMapper {
     Question getById(@Param("id") Integer id);
 
     @Update("UPDATE QUESTION SET TITLE = #{title}, DESCRIPTION = #{description}, GMT_MODIFIED = #{gmtModified}, TAG = #{tag} WHERE ID = #{id}")
-    void update(Question question);
+    int update(Question question);
 }

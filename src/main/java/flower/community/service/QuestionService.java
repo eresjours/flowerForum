@@ -2,6 +2,8 @@ package flower.community.service;
 
 import flower.community.Datatransfermodel.PaginationDTO;
 import flower.community.Datatransfermodel.QuestionDTO;
+import flower.community.exception.CustomizeErrorCode;
+import flower.community.exception.CustomizeException;
 import flower.community.mapper.QuestionMapper;
 import flower.community.mapper.UserMapper;
 import flower.community.model.Question;
@@ -109,6 +111,9 @@ public class QuestionService {
 
     public QuestionDTO getById(Integer id) {
         Question question = questionMapper.getById(id);
+        if (question == null) {
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUNT);
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         // copyProperties() 方法将从 question 对象所有属性复制到 questionDTO 对象
         BeanUtils.copyProperties(question, questionDTO);
@@ -125,7 +130,10 @@ public class QuestionService {
             questionMapper.create(question);
         } else {    // 如果存在，说明是对question进行修改
             question.setGmtModified(System.currentTimeMillis());    //对修改时间进行更新
-            questionMapper.update(question);
+            int updated = questionMapper.update(question);  //返回被修改的行数
+            if (updated != 1) { // 说明修改失败
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUNT);
+            }
         }
     }
 }

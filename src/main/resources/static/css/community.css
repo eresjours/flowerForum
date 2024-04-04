@@ -22,8 +22,20 @@ body {
     color: #999;
 }
 
+/*巨幕*/
 .jumbotron {
     background: url(https://cdn.mos.cms.futurecdn.net/flexiimages/uumx06zn1g1695298453.png) round;
+
+    .jumbotron-text {
+        margin: 50px;
+    }
+}
+
+
+
+.jumbotron.error {
+    background: none;
+    margin: 50px;
 }
 
 .profile .section {
