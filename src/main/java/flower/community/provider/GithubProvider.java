@@ -33,6 +33,7 @@ public class GithubProvider {
         try (Response response = client.newCall(request).execute()) {
             String string = response.body().string();
             // 通过split从URL中获得token
+            // 默认响应格式 access_token=gho_16C7e42F292c6912E7710c838347Ae178B4a&scope=repo%2Cgist&token_type=bearer
             String token = string.split("&")[0].split("=")[1];
             return token;
 

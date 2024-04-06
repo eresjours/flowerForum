@@ -25,7 +25,7 @@
     border-radius: 3em;
     border: 3px solid #fff;
     transition: transform .3s;
-    background: url(avatar.jpg) center/contain;
+    /*background: url(avatar.jpg) center/contain;*/
 }
 #pio {
 	cursor: grab;
@@ -48,7 +48,7 @@
 }
 
 .pio-container.left{ left: 0 }
-.pio-container.right{ right: 0 }
+.pio-container.right{ right: 20px }
 .pio-container.active{ cursor: move }
 .pio-container.static{ pointer-events: none }
 

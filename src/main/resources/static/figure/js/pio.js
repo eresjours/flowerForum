@@ -127,7 +127,7 @@ var Paul_Pio = function (prop) {
         // 触摸
         touch: function () {
             current.canvas.onclick = function () {
-                modules.render(prop.content.touch || ["你在干什么？","干嘛动我呀！小心我咬你！","非礼呀！救命！","再摸的话我可要报警了⌇●﹏●⌇","是···是不小心碰到了吧~~~","110 吗，这里有个变态一直在摸我(ó﹏ò)", "HENTAI!", "不可以这样欺负我啦！","萝莉控是什么呀？", "你看到我的小熊了吗？"]);
+                modules.render(prop.content.touch || ["你在做什么？","工作这么久了休息一会吧", "带我出去晒晒太阳吧"]);
             };
         },
         // 右侧按钮
@@ -144,16 +144,16 @@ var Paul_Pio = function (prop) {
              // 更换模型
              elements.skin.onclick = function () {
                  loadlive2d("pio", prop.model[modules.idol()]);
-                 prop.content.skin && prop.content.skin[1] ? modules.render(prop.content.skin[1]) : modules.render("新衣服真漂亮~");
+                 prop.content.skin && prop.content.skin[1] ? modules.render(prop.content.skin[1]) : modules.render("新形象怎么样");
              };
              elements.skin.onmouseover = function () {
-                 prop.content.skin && prop.content.skin[0] ? modules.render(prop.content.skin[0]) : modules.render("想看看我的新衣服吗？");
+                 prop.content.skin && prop.content.skin[0] ? modules.render(prop.content.skin[0]) : modules.render("想看看我的新形象吗？");
              };
              if(prop.model.length > 1) current.menu.appendChild(elements.skin);
 
              // 关于我
              elements.info.onclick = function () {
-                 window.open("https://blog.csdn.net/qq_57421630?type=blog");
+                 window.open("http://localhost:8887");
              };
              elements.info.onmouseover = function () {
                  modules.render("想了解更多关于我的信息吗？");

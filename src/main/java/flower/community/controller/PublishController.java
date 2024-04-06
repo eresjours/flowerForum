@@ -75,9 +75,8 @@ public class PublishController {
             return "publish";
         }
 
+        // 通过从session中获取用户对象来判断用户是否已登录
         User user = (User) request.getSession().getAttribute("user");
-
-
         if (user == null) {
             model.addAttribute("error", "用户未登录");
             return "publish";

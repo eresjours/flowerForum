@@ -22,7 +22,7 @@ public class ProfileController {
     @Autowired
     private QuestionService questionService;
 
-    @GetMapping("/profile/{action}")
+    @GetMapping("/profile/{action}") //占位符方式传参
     private String profile(HttpServletRequest request,
                            @PathVariable(name = "action") String action,
                            Model model,
