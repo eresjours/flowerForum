@@ -10,8 +10,8 @@ import lombok.Data;
 public class Comment {
 
     private Long id;            // 评论id
-    private Long parentId;      // 父类id
-    private Integer type;       // 父类类型
+    private Long parentId;      // 父类id 当type=1时为questionId；type=2时为上级评论的id
+    private Integer type;       // 类型 1为问题的评论 2为评论的评论
     private Long commentator;   // 评论人id
     private Long gmtCreate;     // 创建时间
     private Long gmtModified;   // 更新时间

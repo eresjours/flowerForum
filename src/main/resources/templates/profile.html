@@ -30,7 +30,7 @@
                 </div>
                 <div class="media-body">
                     <h4 class="media-heading">
-                        <a th:href="@{'question/'+${question.id}}" th:text="${question.title}"></a>
+                        <a th:href="@{'/question/'+${question.id}}" th:text="${question.title}"></a>
                     </h4>
 <!--                    <span th:text="${question.description}"></span><br>-->
                     <span class="text-desc">
@@ -41,10 +41,9 @@
                 </div>
             </div>
             <nav aria-label="Page navigation" style="text-align: center;">
-                <ul class="pagination" style="display: inline-block;">
+                <ul class="pagination" style="display: inline-block">
                     <li th:if="${pagination.showFirstPage}">
-                        <a href="@{'/profile/'+${section}(page=${1})}" aria-label="Previous">
-
+                        <a th:href="@{'/profile/'+${section}(page=${1})}" aria-label="Previous">
                             <span aria-hidden="false">&lt;&lt;</span>
                         </a>
                     </li>

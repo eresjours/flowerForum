@@ -17,7 +17,7 @@
 <div th:insert="~{navigation :: nav}"></div>
     <div class="jumbotron error">
         <h1>出错了！！！</h1>
-        <p th:value="${message}">服务太热了，要不稍等试试</p>
+        <p th:text="${message}"></p>
         <p><a class="btn btn-primary btn-lg" href="/" role="button">返回主页</a></p>
     </div>
 </body>

@@ -23,18 +23,24 @@ public interface QuestionMapper {
     Integer count();
 
     @Select("SELECT * FROM QUESTION WHERE CREATOR = #{userId} LIMIT #{offset}, #{size}")
-    List<Question> listByUserId(@Param(value = "userId") Integer userId, @Param(value = "offset") Integer offset, @Param(value = "size") Integer size);
+    List<Question> listByUserId(@Param(value = "userId") Long userId, @Param(value = "offset") Integer offset, @Param(value = "size") Integer size);
 
     @Select("SELECT COUNT(1) FROM QUESTION WHERE CREATOR = #{userId}")
-    Integer countByUserId(@Param(value = "userId") Integer userId);
+    Integer countByUserId(@Param(value = "userId") Long userId);
 
 
     @Select("SELECT * FROM QUESTION WHERE ID = #{id}")
-    Question getById(@Param("id") Integer id);
+    Question getById(@Param("id") Long id);
 
     @Update("UPDATE QUESTION SET TITLE = #{title}, DESCRIPTION = #{description}, GMT_MODIFIED = #{gmtModified}, TAG = #{tag} WHERE ID = #{id}")
     int update(Question question);
 
     @Update("UPDATE QUESTION SET VIEW_COUNT = VIEW_COUNT + 1 WHERE ID = #{id};")
-    void updateViewCount(Integer id);
+    void updateViewCount(Long id);
+
+    @Select("SELECT * FROM QUESTION WHERE ID = #{parentId}")
+    Question selectByPrimaryKey(@Param(value = "parentId") Long parentId);
+
+    @Update("UPDATE QUESTION SET COMMENT_COUNT = COMMENT_COUNT + 1 WHERE ID = #{id};")
+    void updateCommentCount(Long id);
 }

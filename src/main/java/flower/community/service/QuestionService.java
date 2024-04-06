@@ -70,7 +70,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public PaginationDTO list(Integer userId, Integer page, Integer size) {
+    public PaginationDTO list(Long userId, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalCount = questionMapper.countByUserId(userId);    //通过SQL语句获取question总数
         paginationDTO.computeTotalPage(totalCount, size);
@@ -109,7 +109,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public QuestionDTO getById(Integer id) {
+    public QuestionDTO getById(Long id) {
         Question question = questionMapper.getById(id);
         if (question == null) {
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUNT);
@@ -140,7 +140,14 @@ public class QuestionService {
     /*
         增加阅读数操作
      */
-    public void incView(Integer id) {
+    public void incView(Long id) {
         questionMapper.updateViewCount(id);
+    }
+
+    /*
+        增加评论数
+     */
+    public void incCommentCount(Long id) {
+        questionMapper.updateCommentCount(id);
     }
 }
