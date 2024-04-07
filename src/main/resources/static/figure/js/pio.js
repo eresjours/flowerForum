@@ -6,7 +6,10 @@
 一个支持更换 Live2D 模型的 Typecho 插件。
 ---- */
 
+
+
 var Paul_Pio = function (prop) {
+
     var that = this;
 
     var current = {
@@ -82,13 +85,37 @@ var Paul_Pio = function (prop) {
         var action = {
         // 欢迎
          welcome: function () {
-            if(document.referrer !== "" && document.referrer.indexOf(current.root) === -1){
-                var referrer = document.createElement('a');
-                referrer.href = document.referrer;
-                prop.content.referer ? modules.render(prop.content.referer.replace(/%t/, "“" + referrer.hostname + "”")) : modules.render("欢迎来自 “" + referrer.hostname + "” 的朋友！");
-            }
 
-            else if(prop.tips){
+             fetch('/figure', {
+                 method: 'GET',
+                 headers: {
+                     'Content-Type': 'application/json',
+                     // 在这里添加其他请求头（如认证信息等）
+                 }
+             })
+                 .then(response => {
+                     // 检查请求是否成功
+                     if (!response.ok) {
+                         throw new Error('Failed to fetch user info');
+                     }
+                     // 解析 JSON 响应数据
+                     return response.json();
+                 })
+                 .then(data => {
+                     // 成功获取用户信息后的处理
+                     console.log('成功获取到用户信息:', data);
+                     if(document.referrer !== "" && document.referrer.indexOf(current.root) === -1){
+                         var referrer = document.createElement('a');
+                         referrer.href = document.referrer;
+                         prop.content.referer ? modules.render(prop.content.referer.replace(/%t/, "“" + data.name + "”")) : modules.render("你好 “" + data.name + "” ！");
+                     }
+                 })
+                 .catch(error => {
+                     // 请求失败时的处理
+                     console.error('获取用户信息失败:', error.message);
+                 });
+
+            if(prop.tips){
                 var text, hour = new Date().getHours();
 
                 if (hour > 22 || hour <= 5) {

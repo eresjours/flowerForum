@@ -16,6 +16,10 @@ body {
     height: 38px;
 }
 
+.media-body {
+    padding-top: 10px;
+}
+
 .text-desc {
     font-size: 12px;
     font-weight: normal;
@@ -67,3 +71,18 @@ body {
     color: #999;
     font-size: 13px;
 }
+/*搜索框*/
+
+/*回复框*/
+.comment {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+/*回复框*/
+
+/*回复按钮*/
+.btn-comment {
+    float: right;
+    margin-bottom: 10px;
+}
+/*回复按钮*/

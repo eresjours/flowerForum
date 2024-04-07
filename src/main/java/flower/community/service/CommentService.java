@@ -9,6 +9,7 @@ import flower.community.model.Comment;
 import flower.community.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author WsW
@@ -23,6 +24,7 @@ public class CommentService {
     @Autowired
     private QuestionMapper questionMapper;
 
+    @Transactional  //添加事务功能，当对数据库的操作有一条错误，全部进行回滚
     public void insert(Comment comment) {
 
         if (comment.getParentId() == null || comment.getParentId() == 0) {
