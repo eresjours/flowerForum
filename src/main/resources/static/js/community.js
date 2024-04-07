@@ -14,10 +14,18 @@ function post() {
             "type": 1
         }),
         success: function (response) {
-            if (response.code == 200) {
+            if (response.code == 200) { //评论成功
                 $("#comment_section").hidden();
             } else {
-                alert(response.message);
+                // 未登录状态跳转登录
+                if (response.code == 2003) {
+                    var isAccept = confirm(response.message);
+                    if (isAccept) {
+                        window.open("https://github.com/login/oauth/authorize?client_id=09300ad66c4cdb5affae&redirect_uri=http://localhost:8887/callback&scope=user&state=1&allow_signup=true")
+                    }
+                } else {    // 其它弹出提示框即可
+                    alert(response.message);
+                }
             }
 
             console.log(response)
