@@ -1,5 +1,6 @@
 package flower.community.mapper;
 
+import flower.community.model.Comment;
 import flower.community.model.Question;
 import org.apache.ibatis.annotations.*;
 
@@ -43,4 +44,7 @@ public interface QuestionMapper {
 
     @Update("UPDATE QUESTION SET COMMENT_COUNT = COMMENT_COUNT + 1 WHERE ID = #{id};")
     void updateCommentCount(Long id);
+
+    @Select("SELECT * FROM COMMENT WHERE PARENT_ID = #{id} AND TYPE = 1")
+    List<Comment> selectByQuestionId(Long id);
 }
