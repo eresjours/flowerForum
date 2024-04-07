@@ -13,6 +13,17 @@
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" type="application/javascript"></script>
 </head>
+<script type="application/javascript">
+    <!-- 在网页加载完毕后立刻进行判断，在localStorage中closeable属性是否为true -->
+    window.onload = function () {
+        // debugger;
+        var closeable = window.localStorage.getItem("closeable");
+        if (closeable == "true") {
+            window.localStorage.removeItem("closeable");
+            window.close();
+        }
+    }
+</script>
 <body>
 <!-- 插入导航栏 -->
 <div th:insert="~{navigation :: nav}"></div>

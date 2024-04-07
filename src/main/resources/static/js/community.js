@@ -22,6 +22,8 @@ function post() {
                     var isAccept = confirm(response.message);
                     if (isAccept) {
                         window.open("https://github.com/login/oauth/authorize?client_id=09300ad66c4cdb5affae&redirect_uri=http://localhost:8887/callback&scope=user&state=1&allow_signup=true")
+                        /*因为在弹起新页面时，页面没有办法传递元素，所以存入浏览器中localStorage*/
+                        window.localStorage.setItem("closeable", true);
                     }
                 } else {    // 其它弹出提示框即可
                     alert(response.message);
