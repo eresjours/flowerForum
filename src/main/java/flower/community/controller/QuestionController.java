@@ -33,6 +33,7 @@ public class QuestionController {
     public String question(@PathVariable(name = "id") Long id,
                            Model model) {
 
+        // 显示所有回复
         List<CommentDTO> comments = commentService.listByQuestionId(id);
 
         QuestionDTO questionDTO = questionService.getById(id);

@@ -66,12 +66,14 @@ body {
     right: 0;
     border: none;
 }
+/*搜索框*/
 
 /*编辑按钮*/
 .community-menu {
     display: block;
     color: #999;
-    font-size: 13px;
+    font-size: 15px;
+    float: right;
 }
 /*编辑按钮*/
 
@@ -89,11 +91,13 @@ body {
 }
 /*回复按钮*/
 
-/*回复页面的分割线*/
+/*回复下的分割线*/
 .comment-sp {
     margin-top: 0;
+    border-color: #999;
+    border-width: medium;
 }
-/*回复页面的分割线*/
+/*回复下的分割线*/
 
 /*点赞和评论标签*/
 .menu {
@@ -110,7 +114,7 @@ body {
 .menu .icon:hover {
     color: #499EF3;
 }
-/*回复页面的分割线*/
+/*点赞和评论标签*/
 
 /*每条回复的边框*/
 .comments {
@@ -119,3 +123,9 @@ body {
     padding: 5px;
 }
 /*每条回复的边框*/
+
+/*问题题目*/
+.question-title {
+    margin-top: 25px;
+}
+/*问题题目*/

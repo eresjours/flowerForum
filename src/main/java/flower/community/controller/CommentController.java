@@ -6,6 +6,7 @@ import flower.community.exception.CustomizeErrorCode;
 import flower.community.model.Comment;
 import flower.community.model.User;
 import flower.community.service.CommentService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,6 +39,12 @@ public class CommentController {
         if (user == null) {
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
         }
+
+        // 调用 commons-lang3 中的 isBlank 方法，进行非空判断
+        if (commentCreateDTO == null || StringUtils.isBlank(commentCreateDTO.getContent())) { // 说明前端返回的数据为空
+            return ResultDTO.errorOf(CustomizeErrorCode.CONTENT_IS_EMPTY);
+        }
+
         Comment comment = new Comment();
         comment.setParentId(commentCreateDTO.getParentId());
         comment.setContent(commentCreateDTO.getContent());

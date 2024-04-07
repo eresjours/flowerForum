@@ -3,6 +3,11 @@ function post() {
     var questionId = $("#question_id").val();
     var content = $("#comment_content").val();
 
+    if (!content) {
+        alert("不能回复空内容~~~");
+        return;
+    }
+
     /* 通过post请求将数据返回后端进行处理 */
     $.ajax({
         type: "POST",
@@ -15,6 +20,8 @@ function post() {
         }),
         success: function (response) {
             if (response.code == 200) { //评论成功
+                // 将页面进行刷新
+                window.location.reload();
                 $("#comment_section").hidden();
             } else {
                 // 未登录状态跳转登录

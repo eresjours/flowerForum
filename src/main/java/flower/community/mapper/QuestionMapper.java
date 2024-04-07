@@ -17,20 +17,20 @@ public interface QuestionMapper {
     void create(Question question);
 
     // 跳过offset条数据, 查询size条数据
-    @Select("SELECT * FROM QUESTION LIMIT #{offset}, #{size}")
+    @Select("SELECT * FROM QUESTION ORDER BY GMT_CREATE DESC LIMIT #{offset}, #{size}")
     List<Question> list(@Param(value = "offset") Integer offset, @Param(value = "size") Integer size);
 
     @Select("SELECT COUNT(1) FROM QUESTION")
     Integer count();
 
-    @Select("SELECT * FROM QUESTION WHERE CREATOR = #{userId} LIMIT #{offset}, #{size}")
+    @Select("SELECT * FROM QUESTION WHERE CREATOR = #{userId} ORDER BY GMT_CREATE DESC LIMIT #{offset}, #{size}")
     List<Question> listByUserId(@Param(value = "userId") Long userId, @Param(value = "offset") Integer offset, @Param(value = "size") Integer size);
 
     @Select("SELECT COUNT(1) FROM QUESTION WHERE CREATOR = #{userId}")
     Integer countByUserId(@Param(value = "userId") Long userId);
 
 
-    @Select("SELECT * FROM QUESTION WHERE ID = #{id}")
+    @Select("SELECT * FROM QUESTION WHERE ID = #{id} ORDER BY GMT_CREATE DESC")
     Question getById(@Param("id") Long id);
 
     @Update("UPDATE QUESTION SET TITLE = #{title}, DESCRIPTION = #{description}, GMT_MODIFIED = #{gmtModified}, TAG = #{tag} WHERE ID = #{id}")
@@ -45,6 +45,6 @@ public interface QuestionMapper {
     @Update("UPDATE QUESTION SET COMMENT_COUNT = COMMENT_COUNT + 1 WHERE ID = #{id};")
     void updateCommentCount(Long id);
 
-    @Select("SELECT * FROM COMMENT WHERE PARENT_ID = #{id} AND TYPE = 1")
+    @Select("SELECT * FROM COMMENT WHERE PARENT_ID = #{id} AND TYPE = 1 ORDER BY GMT_CREATE DESC")
     List<Comment> selectByQuestionId(Long id);
 }
