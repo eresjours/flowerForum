@@ -111,6 +111,10 @@ body {
     cursor: pointer;    //鼠标悬浮样式
 }
 
+.menu .active {
+    color: #499EF3;
+}
+
 .menu .icon:hover {
     color: #499EF3;
 }
@@ -129,3 +133,19 @@ body {
     margin-top: 25px;
 }
 /*问题题目*/
+
+/*二级回复边框*/
+.sub-comments {
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid #eee;
+    padding-top: 15px;
+    margin-bottom: 15px;
+}
+/*二级回复边框*/
+
+/*二级回复中的按钮*/
+.sub-comments .btn{
+    margin-top: 10px;
+}
+/*二级回复中的按钮*/

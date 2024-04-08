@@ -47,4 +47,7 @@ public interface QuestionMapper {
 
     @Select("SELECT * FROM COMMENT WHERE PARENT_ID = #{id} AND TYPE = 1 ORDER BY GMT_CREATE DESC")
     List<Comment> selectByQuestionId(Long id);
+
+    @Select("SELECT * FROM COMMENT WHERE PARENT_ID = #{id} AND TYPE = 2 ORDER BY GMT_CREATE DESC")
+    List<Comment> selectByCommentId(Long id);
 }

@@ -91,4 +91,23 @@ public class CommentService {
         }
         return commentDTOS;
     }
+
+    // 根据commentId获取二级评论，可以和上面的方法进行重构//todo
+    public List<CommentDTO> listByCommentId(Long id) {
+        List<Comment> comments = questionMapper.selectByCommentId(id);
+
+        if (comments.size() == 0) {
+            return new ArrayList<>();
+        }
+
+        List<CommentDTO> commentDTOS = new ArrayList<>();
+        for (Comment comment : comments) {  // 遍历comments获取所有评论人的id
+            User user = userMapper.findByID(comment.getCommentator());
+            CommentDTO commentDTO = new CommentDTO();
+            BeanUtils.copyProperties(comment, commentDTO);
+            commentDTO.setUser(user);          //questionDTO就相当于一个组合对象 question+user
+            commentDTOS.add(commentDTO);
+        }
+        return commentDTOS;
+    }
 }

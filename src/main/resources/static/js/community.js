@@ -1,8 +1,27 @@
+/**
+ * 提交type=1的回复
+ */
 function post() {
     // 从前端获取评论问题id 和 评论内容
     var questionId = $("#question_id").val();
     var content = $("#comment_content").val();
 
+    comment2parent(questionId, 1, content);
+}
+
+/**
+ * 提交type=2的回复
+ */
+function comment(e, content) {
+    var commentId = e.getAttribute("data-id");
+    var content = $("#input-"+commentId).val();
+    comment2parent(commentId, 2, content);
+}
+
+/**
+ * 提交回复
+ */
+function comment2parent(targetId, type, content) {
     if (!content) {
         alert("不能回复空内容~~~");
         return;
@@ -14,9 +33,9 @@ function post() {
         url: "/comment",
         contentType: 'application/json',
         data: JSON.stringify({
-            "parentId": questionId,
+            "parentId": targetId,
             "content": content,
-            "type": 1
+            "type": type
         }),
         success: function (response) {
             if (response.code == 200) { //评论成功
@@ -41,4 +60,49 @@ function post() {
         },
         dataType: "json"
     });
+}
+
+/**
+ * 展开二级回复
+ */
+function collapseComments(e) {
+    var id = e.getAttribute("data-id"); //获取问题id
+    var comments = $("#comment-"+id);   //拼接得到二级回复的id
+
+    // 获取二级评论的展开状态
+    var collapse = e.getAttribute("data-collapse");
+    if (collapse) { //如果存在就说明已经展开，需要折叠
+        comments.removeClass("in");
+        e.removeAttribute("data-collapse");  // 移除二级评论展开状态
+        e.classList.remove("active");   // 删除展开后的颜色
+    } else {
+
+        $.getJSON("/comment/" + id, function (data) {
+
+            var commentBody = $("comment-body"+id);
+            var items = [];
+
+            // 遍历出所有子元素
+            $.each(data.data, function (comment) {
+                var c = $("<div/>", {
+                    "class":"col-lg-12 col-md-12 col-sm-12 col-xs-12 comments",
+                    html: comment.content
+                });
+                items.push(c);
+            });
+
+            commentBody.append($("<div/>", {
+                "class":"col-lg-12 col-md-12 col-sm-12 col-xs-12 collapse sub-comments",
+                "id":"comment-"+id,
+                html: items.join("")
+            }));
+
+
+
+            comments.addClass("in");    // 添加in class实现展开功能
+            e.setAttribute("data-collapse", "in");  // 标记二级评论展开状态
+            e.classList.add("active");  // 删除展开后的颜色
+        });
+    }
+
 }
