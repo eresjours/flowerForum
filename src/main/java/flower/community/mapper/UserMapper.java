@@ -1,7 +1,11 @@
 package flower.community.mapper;
 
+import flower.community.model.Comment;
+import flower.community.model.Question;
 import flower.community.model.User;
 import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 /**
  * @author WsW
@@ -24,4 +28,5 @@ public interface UserMapper {
 
     @Update("UPDATE USER SET NAME=#{name}, TOKEN=#{token}, GMT_MODIFIED=#{gmtModified}, AVATAR_URL=#{avatarUrl} WHERE ACCOUNT_ID=#{accountId}")
     void update(User User);
+
 }

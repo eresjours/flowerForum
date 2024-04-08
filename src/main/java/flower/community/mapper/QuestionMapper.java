@@ -1,5 +1,6 @@
 package flower.community.mapper;
 
+import flower.community.Datatransfermodel.QuestionDTO;
 import flower.community.model.Comment;
 import flower.community.model.Question;
 import org.apache.ibatis.annotations.*;
@@ -50,4 +51,7 @@ public interface QuestionMapper {
 
     @Select("SELECT * FROM COMMENT WHERE PARENT_ID = #{id} AND TYPE = 2 ORDER BY GMT_CREATE DESC")
     List<Comment> selectByCommentId(Long id);
+
+    @Select("SELECT * FROM QUESTION WHERE ID != #{id} AND TAG REGEXP #{tag}")
+    List<QuestionDTO> selectRelated(QuestionDTO questionDTO);
 }

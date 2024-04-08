@@ -77,32 +77,65 @@ function collapseComments(e) {
         e.classList.remove("active");   // 删除展开后的颜色
     } else {
 
-        $.getJSON("/comment/" + id, function (data) {
+        var subCommentContainer = $("#comment-"+id);
 
-            var commentBody = $("comment-body"+id);
-            var items = [];
-
-            // 遍历出所有子元素
-            $.each(data.data, function (comment) {
-                var c = $("<div/>", {
-                    "class":"col-lg-12 col-md-12 col-sm-12 col-xs-12 comments",
-                    html: comment.content
-                });
-                items.push(c);
-            });
-
-            commentBody.append($("<div/>", {
-                "class":"col-lg-12 col-md-12 col-sm-12 col-xs-12 collapse sub-comments",
-                "id":"comment-"+id,
-                html: items.join("")
-            }));
-
-
+        // 根据元素数量判断是否加载过，加载过就不用再次请求
+        if (subCommentContainer.children().length != 1) {
 
             comments.addClass("in");    // 添加in class实现展开功能
             e.setAttribute("data-collapse", "in");  // 标记二级评论展开状态
             e.classList.add("active");  // 删除展开后的颜色
-        });
+
+        } else {
+            // 获得所有二级回复，并拼接显示
+            $.getJSON("/comment/" + id, function (data) {
+
+                // 遍历出所有子元素
+                $.each(data.data.reverse(), function (index, comment) {
+
+                    /*回复人和头像*/
+                    var mediaLeftElement = $("<div/>", {
+                        "class":"media-left"
+                    }).append($("<img/>", {
+                        "class":"media-object img-circle",
+                        "src":comment.user.avatarUrl
+                    }));
+
+                    var mediaBodyElement = $("<div/>", {
+                        "class":"media-body"
+                    }).append($("<h5/>", {
+                        "class":"media-heading",
+                        "html":comment.user.name
+                    })).append($("<div/>", {
+                        "html":comment.content
+                    })).append($("<div/>", {
+                        "class":"menu"
+                    }).append($("<span/>", {
+                        "class":"pull-right",
+                        "html":moment(comment.gmtCreate).format('YYYY-MM-DD HH:mm')
+                    })));
+
+                    var mediaElement = $("<div/>", {
+                        "class":"media"
+                    }).append(mediaLeftElement).append(mediaBodyElement);
+                    /*回复人和头像*/
+
+                    // 回复内容
+                    var commentElement = $("<div/>", {
+                        "class":"col-lg-12 col-md-12 col-sm-12 col-xs-12 comments",
+                        html: comment.content
+                    }).append(mediaElement);
+
+                    subCommentContainer.prepend(commentElement);  // 将拼接的界面每次追加到最前面
+                });
+
+
+                comments.addClass("in");    // 添加in class实现展开功能
+                e.setAttribute("data-collapse", "in");  // 标记二级评论展开状态
+                e.classList.add("active");  // 删除展开后的颜色
+            });
+        }
+
     }
 
 }

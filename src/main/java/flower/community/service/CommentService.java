@@ -50,14 +50,16 @@ public class CommentService {
             throw new CustomizeException(CustomizeErrorCode.TYPE_PARAM_WRONG);
         }
 
+        // 根据评论的类型判断是问题的评论还是回复的评论
         if (comment.getType() == CommentTypeEnum.COMMENT.getType()) {
             // 回复评论
             Comment dbComment = commentMapper.selectByPrimaryKey(comment.getParentId());
             if (dbComment == null) {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
-            // 将评论插入数据库
-            commentMapper.insert(comment);
+
+            // 将回复评论的评论数增加
+            commentMapper.updateCommentCount(dbComment.getId());
 
         } else {
             // 回复问题

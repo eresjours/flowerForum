@@ -8,6 +8,7 @@ import flower.community.mapper.QuestionMapper;
 import flower.community.mapper.UserMapper;
 import flower.community.model.Question;
 import flower.community.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -149,5 +150,25 @@ public class QuestionService {
      */
     public void incCommentCount(Long id) {
         questionMapper.updateCommentCount(id);
+    }
+
+    /*
+        根据标签搜索相关问题
+    */
+    public List<QuestionDTO> selectRelated(QuestionDTO questionDTO) {
+        // 如果标签是空的
+        if (StringUtils.isBlank(questionDTO.getTag())) {
+            return new ArrayList<>();
+        }
+
+        // 将标签中的 , 全部用 | 替换，方便数据库正则表达式匹配
+        String relatedTag = StringUtils.replace(questionDTO.getTag(), ",", "|");
+        // 开一个新的question防止干扰
+        QuestionDTO question = new QuestionDTO();
+        question.setId(questionDTO.getId());
+        question.setTag(relatedTag);
+        List<QuestionDTO> questionDTOList = questionMapper.selectRelated(question);
+
+        return questionDTOList;
     }
 }

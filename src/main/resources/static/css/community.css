@@ -111,6 +111,15 @@ body {
     cursor: pointer;    //鼠标悬浮样式
 }
 
+.menu .comment-icon {
+    font-size: 16px;
+    cursor: pointer;    //鼠标悬浮样式
+}
+
+.menu .comment-icon:hover {
+    color: #499EF3;
+}
+
 .menu .active {
     color: #499EF3;
 }
@@ -149,3 +158,19 @@ body {
     margin-top: 10px;
 }
 /*二级回复中的按钮*/
+
+/*绿色标签*/
+.label-success {
+    font-size: medium;
+    float: none;
+    margin-right: 5px;
+}
+/*绿色标签*/
+
+/*蓝色标签*/
+.label-info {
+    font-size: x-small;
+    float: none;
+    margin-right: 5px;
+}
+/*蓝色标签*/

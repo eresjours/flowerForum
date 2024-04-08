@@ -1,10 +1,7 @@
 package flower.community.mapper;
 
 import flower.community.model.Comment;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 /**
  * @author WsW
@@ -19,4 +16,7 @@ public interface CommentMapper {
 
     @Select("SELECT * FROM COMMENT WHERE ID=#{parentId}")
     Comment selectByPrimaryKey(@Param("parentId") Long parentId);
+
+    @Update("UPDATE COMMENT SET COMMENT_COUNT = COMMENT_COUNT + 1 WHERE ID = #{id};")
+    void updateCommentCount(Long id);
 }
