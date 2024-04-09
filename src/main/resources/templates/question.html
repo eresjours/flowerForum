@@ -9,6 +9,8 @@
     <link rel="stylesheet"
           href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap-theme.min.css"/>
     <link rel="stylesheet" href="/css/community.css"/>
+    <!--  富文本样式  -->
+    <link rel="stylesheet" href="/css/editormd.preview.min.css"/>
     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"
             integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
@@ -18,6 +20,9 @@
             type="application/javascript"></script>
     <script src="/js/moment.js" type="application/javascript"></script>
     <script src="/js/community.js" type="application/javascript"></script>
+    <script src="/js/editormd.min.js"></script>
+    <script src="/js/lib/marked.min.js"></script>
+    <script src="/js/lib/prettify.min.js"></script>
 </head>
 <body>
 <!-- 导航栏部分 -->
@@ -38,8 +43,16 @@
                 发布时间:&nbsp;<span th:text="${#dates.format(question.gmtCreate, 'yyyy-MM-dd HH:hh')}"></span>
                 </span>
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 section">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 section" th:text="${question.description}"
-                     style="font-size: 20px;"></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 section" id="question-view">
+                    <!-- Server-side output Markdown text -->
+                    <textarea style="display:none;" th:text="${question.description}"></textarea>
+                </div>
+                <script type="text/javascript">
+                    $(function() {
+                        editormd.markdownToHTML("question-view", {});
+                    });
+                </script>
+
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 section">
 
                 <!-- 标签 -->
@@ -168,7 +181,7 @@
             <!-- 管理员 -->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 section">
                 <h4>admin</h4>
-                <img class="img-thumbnail" src="/image/administrator.png" style="width: 100%">
+                <img class="img-thumbnail" src="/images/administrator.png" style="width: 100%">
             </div>
 
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 section">
