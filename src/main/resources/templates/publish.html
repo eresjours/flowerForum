@@ -28,7 +28,7 @@
                 <input type="hidden" name="id" th:value="${id}">
                 <div class="form-group">
                     <label for="title">问题标题（简单扼要）</label>
-                    <input type="text" class="form-control" th:value="${title}" id="title" name="title" placeholder="问题标题...">
+                    <input type="text" class="form-control" th:value="${title}" id="title" name="title" placeholder="问题标题..." autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label for="description">问题补充（注意：参照提示）</label>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="form-group">
                     <label for="tag">添加标签</label>
-                    <input type="text" class="form-control" th:value="${tag}" id="tag" name="tag" placeholder="输入标签，以逗号分隔">
+                    <input type="text" class="form-control" th:value="${tag}" id="tag" name="tag" placeholder="输入标签，以逗号分隔" autocomplete="off">
                 </div>
 
                 <div class="container-fluid">
@@ -57,14 +57,6 @@
             问题主题应该简明扼要地概括您所需要帮助的内容。例如：“关于玫瑰花的叶子变黄，求解决方法。<br/>
             <h4>提供背景信息</h4>
             提供与问题相关的背景信息可以帮助其他用户更好地理解您的情况。例如，您是否最近更改了植物的环境、施肥、浇水等情况？<br/>
-            <h4>具体描述问题</h4>
-            尽可能详细地描述问题的具体表现，例如叶子的颜色、形态、生长情况等。这将有助于其他用户更准确地理解您所面临的挑战。<br/>
-            <h4>提供已尝试的解决方法</h4>
-            如果您已经尝试过一些解决方法但没有成功，可以列出来。这有助于其他用户避免重复建议，并提供更有效的建议。<br/>
-            <h4>附加图片或视频（如果可能）</h4>
-            如果可能的话，附加上与问题相关的图片或视频将会极大地帮助其他用户更好地理解您的问题，并提供更有针对性的建议。<br/>
-            <h4>清晰的期望和要求</h4>
-            说明您期望其他用户能够提供何种类型的帮助或解决方案。这将有助于其他用户更好地满足您的需求。<br/>
             <h4>添加标签</h4>
             选择一个或多个合适的标签，用逗号隔开，每个标签不超过10个字<br/>
             <h4>礼貌和感谢</h4>
