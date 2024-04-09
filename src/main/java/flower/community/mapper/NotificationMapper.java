@@ -19,7 +19,7 @@ public interface NotificationMapper {
     @Select("SELECT COUNT(1) FROM NOTIFICATION WHERE RECEIVER = #{receiver}")
     Integer countByReceiver(Long receiver);
 
-    @Select("SELECT * FROM NOTIFICATION WHERE RECEIVER = #{id} ORDER BY GMT_CREATE DESC LIMIT #{offset}, #{size}")
+    @Select("SELECT * FROM NOTIFICATION WHERE RECEIVER = #{id} ORDER BY STATUS ASC, GMT_CREATE DESC LIMIT #{offset}, #{size}")
     List<Notification> listByReceiver(@Param(value = "id") Long id, @Param(value = "offset") Integer offset, @Param(value = "size") Integer size);
 
     @Select("SELECT COUNT(1) FROM NOTIFICATION WHERE RECEIVER = #{id} AND STATUS = 0")
