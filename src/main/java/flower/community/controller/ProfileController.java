@@ -1,7 +1,9 @@
 package flower.community.controller;
 
 import flower.community.Datatransfermodel.PaginationDTO;
+import flower.community.Datatransfermodel.QuestionDTO;
 import flower.community.model.User;
+import flower.community.service.NotificationService;
 import flower.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ public class ProfileController {
 
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private NotificationService notificationService;
 
     @GetMapping("/profile/{action}") //占位符方式传参
     private String profile(HttpServletRequest request,
@@ -35,16 +39,25 @@ public class ProfileController {
         if (user == null)
             return "redirect:/";
 
-        if ("questions".equals(action)){
+        if ("questions".equals(action)){ //访问我的问题的相关操作
             model.addAttribute("section", "questions");
             model.addAttribute("sectionName", "我的提问");
-        } else if ("repies".equals(action)) {
-            model.addAttribute("section", "repies");
+
+            PaginationDTO<QuestionDTO> paginationDTO = questionService.list(user.getId(), page, size);
+            model.addAttribute("pagination", paginationDTO);
+
+        } else if ("replies".equals(action)) {  //访问最新回复的相关操作
+
+            PaginationDTO paginationDTO = notificationService.list(user.getId(), page, size);
+            Long unreadCount = notificationService.unreadCount(user.getId());
+
+            model.addAttribute("section", "replies");
             model.addAttribute("sectionName", "最新回复");
+            model.addAttribute("pagination", paginationDTO);
+            model.addAttribute("unreadCount", unreadCount);
         }
 
-        PaginationDTO paginationDTO = questionService.list(user.getId(), page, size);
-        model.addAttribute("pagination", paginationDTO);
+
         return "profile";
     }
 }

@@ -1,14 +1,17 @@
 package flower.community.service;
 
 import flower.community.Datatransfermodel.CommentDTO;
-import flower.community.Datatransfermodel.QuestionDTO;
 import flower.community.enums.CommentTypeEnum;
+import flower.community.enums.NotificationTypeEnum;
+import flower.community.enums.NotificationStatusEnum;
 import flower.community.exception.CustomizeErrorCode;
 import flower.community.exception.CustomizeException;
 import flower.community.mapper.CommentMapper;
+import flower.community.mapper.NotificationMapper;
 import flower.community.mapper.QuestionMapper;
 import flower.community.mapper.UserMapper;
 import flower.community.model.Comment;
+import flower.community.model.Notification;
 import flower.community.model.Question;
 import flower.community.model.User;
 import org.springframework.beans.BeanUtils;
@@ -17,10 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author WsW
@@ -37,10 +37,13 @@ public class CommentService {
 
     @Autowired
     private UserMapper userMapper;
+    
+    @Autowired
+    private NotificationMapper notificationMapper;
 
     /*添加评论*/
     @Transactional  //添加事务功能，当对数据库的操作有一条错误，全部进行回滚
-    public void insert(Comment comment) {
+    public void insert(Comment comment, User commentator) {
 
         if (comment.getParentId() == null || comment.getParentId() == 0) {
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUNT);
@@ -61,6 +64,15 @@ public class CommentService {
             // 将回复评论的评论数增加
             commentMapper.updateCommentCount(dbComment.getId());
 
+            // 找到回复的评论属于哪个问题，获取问题名字
+            Question question = questionMapper.selectByPrimaryKey(dbComment.getParentId());
+            if (question == null) {
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUNT);
+            }
+
+            //  创建通知
+            createNotify(comment, dbComment, commentator.getName(), question.getTitle());
+
         } else {
             // 回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
@@ -70,9 +82,40 @@ public class CommentService {
 
             // 将问题的评论数增加
             questionMapper.updateCommentCount(question.getId());
+
+            createNotify(comment, question, commentator.getName(), question.getTitle());
         }
 
         commentMapper.insert(comment);
+    }
+
+    /* 对新创建的问题的评论 */
+    private void createNotify(Comment comment, Question question, String notifierName, String outerTitle) {
+        Notification notification = new Notification();
+        notification.setGmtCreate(System.currentTimeMillis());
+        notification.setType(NotificationTypeEnum.REPLAY_QUESTION.getType());
+        notification.setOuterid(comment.getParentId());     // 回复的问题的ID
+        notification.setReceiver(question.getCreator());   // 回复的问题的作者
+        notification.setNotifier(comment.getCommentator());     // 发起通知的通知者的ID
+        notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());  //设置未读
+        notification.setNotifierName(notifierName);
+        notification.setOuterTitle(outerTitle);
+        notificationMapper.insertNotified(notification);
+    }
+
+    /* 对新创建的评论的评论添加一个通知 */
+    private void createNotify(Comment comment, Comment dbComment, String notifierName, String outerTitle) {
+        /* 新插入的comment 对 dbComment 进行回复 */
+        Notification notification = new Notification();
+        notification.setGmtCreate(System.currentTimeMillis());
+        notification.setType(NotificationTypeEnum.REPLAY_COMMENT.getType());
+        notification.setOuterid(comment.getParentId());     // 回复的评论的ID
+        notification.setReceiver(dbComment.getCommentator());   // 回复的评论的作者
+        notification.setNotifier(comment.getCommentator());     // 发起通知的通知者的ID
+        notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());  //设置未读
+        notification.setNotifierName(notifierName);
+        notification.setOuterTitle(outerTitle);
+        notificationMapper.insertNotified(notification);
     }
 
     /*根据Id获取问题的评论*/
@@ -111,5 +154,9 @@ public class CommentService {
             commentDTOS.add(commentDTO);
         }
         return commentDTOS;
+    }
+
+    public Long getQuestionIdByParentId(Long outerid) {
+        return commentMapper.getQuestionIdByParentId(outerid);
     }
 }

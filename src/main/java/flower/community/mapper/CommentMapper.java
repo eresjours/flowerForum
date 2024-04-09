@@ -19,4 +19,7 @@ public interface CommentMapper {
 
     @Update("UPDATE COMMENT SET COMMENT_COUNT = COMMENT_COUNT + 1 WHERE ID = #{id};")
     void updateCommentCount(Long id);
+
+    @Select("SELECT PARENT_ID FROM COMMENT WHERE ID=#{outerid}")
+    Long getQuestionIdByParentId(Long outerid);
 }

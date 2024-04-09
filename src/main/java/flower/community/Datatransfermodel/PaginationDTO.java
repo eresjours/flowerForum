@@ -10,9 +10,9 @@ import java.util.List;
  * @version 1.0
  */
 @Data
-public class PaginationDTO {
+public class PaginationDTO<T> {
 
-    private List<QuestionDTO> questions;
+    private List<T> data;
 
     private boolean showPrevious;       //是否有向前按钮
     private boolean showFirstPage;      //是否有第一页按钮

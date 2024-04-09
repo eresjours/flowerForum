@@ -66,13 +66,14 @@ public class QuestionService {
         }
 
         // 将获取的questionList放入paginationDTO, 前端和分页使用
-        paginationDTO.setQuestions(questionDTOList);
+        paginationDTO.setData(questionDTOList);
 
         return paginationDTO;
     }
 
-    public PaginationDTO list(Long userId, Integer page, Integer size) {
-        PaginationDTO paginationDTO = new PaginationDTO();
+    /* 根据用户ID获取所有问题并分页 */
+    public PaginationDTO<QuestionDTO> list(Long userId, Integer page, Integer size) {
+        PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
         Integer totalCount = questionMapper.countByUserId(userId);    //通过SQL语句获取question总数
         paginationDTO.computeTotalPage(totalCount, size);
         /*
@@ -105,7 +106,7 @@ public class QuestionService {
         }
 
         // 将获取的questionList放入paginationDTO, 前端和分页使用
-        paginationDTO.setQuestions(questionDTOList);
+        paginationDTO.setData(questionDTOList);
 
         return paginationDTO;
     }
@@ -145,12 +146,12 @@ public class QuestionService {
         questionMapper.updateViewCount(id);
     }
 
-    /*
-        增加评论数
-     */
-    public void incCommentCount(Long id) {
-        questionMapper.updateCommentCount(id);
-    }
+//    /*
+//        增加评论数
+//     */
+//    public void incCommentCount(Long id) {
+//        questionMapper.updateCommentCount(id);
+//    }
 
     /*
         根据标签搜索相关问题
