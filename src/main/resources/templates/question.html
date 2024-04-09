@@ -44,7 +44,6 @@
 
                 <!-- 标签 -->
                 <div>
-<!--                    <span class="label label-success" th:text="${question.tag}"></span>-->
                     <span class="label label-success" th:each="tag : ${question.tag.split(',')}">
                         <span class="glyphicon glyphicon-tags"></span>
                         <span class="label label-success" th:text="${tag}"></span>

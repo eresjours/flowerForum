@@ -77,6 +77,13 @@ body {
 }
 /*编辑按钮*/
 
+/*我的问题编辑按钮*/
+.my-questions-edit {
+    color: #999;
+    font-size: 12px;
+}
+/*我的问题编辑按钮*/
+
 /*回复框*/
 .comment {
     margin-top: 10px;
