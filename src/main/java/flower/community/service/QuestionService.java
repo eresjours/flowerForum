@@ -31,10 +31,20 @@ public class QuestionService {
     @Autowired
     private UserMapper userMapper;
 
-    public PaginationDTO list(Integer page, Integer size) {
+    public PaginationDTO list(String search, Integer page, Integer size) {
+
+        Integer totalCount;
+        if (StringUtils.isNotBlank(search)) {
+            // 如果search不为空，通过like进行模糊查询
+            // 获得search总数
+            totalCount = questionMapper.countBySearch(search);
+        } else {
+            totalCount = questionMapper.count();    //通过SQL语句获取question总数
+        }
+
 
         PaginationDTO paginationDTO = new PaginationDTO();
-        Integer totalCount = questionMapper.count();    //通过SQL语句获取question总数
+//        Integer totalCount = questionMapper.count();    //通过SQL语句获取question总数
         paginationDTO.computeTotalPage(totalCount, size);
         /*
             容错处理
@@ -55,7 +65,14 @@ public class QuestionService {
         /*
             获取所有question并添加user对象
          */
-        List<Question> questions = questionMapper.list(offset, size);
+        List<Question> questions;
+        if (StringUtils.isNotBlank(search)) {
+            // 如果search不为空，通过like进行模糊查询
+            questions = questionMapper.selectBySearch(search, offset, size);
+        } else {
+            questions = questionMapper.list(offset, size);
+        }
+
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : questions) {
             User user = userMapper.findByID(question.getCreator());
@@ -146,12 +163,6 @@ public class QuestionService {
         questionMapper.updateViewCount(id);
     }
 
-//    /*
-//        增加评论数
-//     */
-//    public void incCommentCount(Long id) {
-//        questionMapper.updateCommentCount(id);
-//    }
 
     /*
         根据标签搜索相关问题

@@ -54,4 +54,10 @@ public interface QuestionMapper {
 
     @Select("SELECT * FROM QUESTION WHERE ID != #{id} AND TAG REGEXP #{tag}")
     List<QuestionDTO> selectRelated(QuestionDTO questionDTO);
+
+    @Select("SELECT * FROM QUESTION WHERE TITLE LIKE CONCAT('%', #{search}, '%') ORDER BY GMT_CREATE DESC LIMIT #{offset}, #{size}")
+    List<Question> selectBySearch(@Param(value = "search") String search, @Param(value = "offset") Integer offset, @Param(value = "size") Integer size);
+
+    @Select("SELECT COUNT(*) FROM QUESTION WHERE TITLE LIKE CONCAT('%', #{search}, '%')")
+    Integer countBySearch(String search);
 }
