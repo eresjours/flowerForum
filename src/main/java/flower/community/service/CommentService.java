@@ -91,6 +91,11 @@ public class CommentService {
 
     /* 对新创建的问题的评论 */
     private void createNotify(Comment comment, Question question, String notifierName, String outerTitle) {
+
+        // 自己回复自己不需要通知
+        if (comment.getCommentator() == question.getCreator()) {
+            return;
+        }
         Notification notification = new Notification();
         notification.setGmtCreate(System.currentTimeMillis());
         notification.setType(NotificationTypeEnum.REPLAY_QUESTION.getType());
@@ -105,6 +110,11 @@ public class CommentService {
 
     /* 对新创建的评论的评论添加一个通知 */
     private void createNotify(Comment comment, Comment dbComment, String notifierName, String outerTitle) {
+
+        // 自己回复自己，不需要通知
+        if (comment.getCommentator() == dbComment.getCommentator()) {
+            return;
+        }
         /* 新插入的comment 对 dbComment 进行回复 */
         Notification notification = new Notification();
         notification.setGmtCreate(System.currentTimeMillis());

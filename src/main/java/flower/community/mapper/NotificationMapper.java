@@ -13,7 +13,7 @@ import java.util.List;
 public interface NotificationMapper {
 
 
-    @Insert("INSERT INTO NOTIFICATION (NOTIFIER, RECEIVER, OUTERID, TYPE, GMT_CREATE, STATUS, NOTIFIER_NAME, OUTER_TITLE) VALUES (#{notifier}, #{receiver}, #{outerId}, #{type}, #{gmtCreate}, #{status}, #{notifierName}, #{outerTitle})")
+    @Insert("INSERT INTO NOTIFICATION (NOTIFIER, RECEIVER, OUTERID, TYPE, GMT_CREATE, STATUS, NOTIFIER_NAME, OUTER_TITLE) VALUES (#{notifier}, #{receiver}, #{outerid}, #{type}, #{gmtCreate}, #{status}, #{notifierName}, #{outerTitle})")
     void insertNotified(Notification notification);
 
     @Select("SELECT COUNT(1) FROM NOTIFICATION WHERE RECEIVER = #{receiver}")

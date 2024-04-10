@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class FileController {
 
+    /* todo
+    待完成
+    处理图片上传 */
+
     @RequestMapping("/file/upload")
     @ResponseBody
     public FileDTO upload() {
