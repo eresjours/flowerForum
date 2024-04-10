@@ -62,10 +62,15 @@
                         <span class="label label-success" th:text="${tag}"></span>
                     </span>
                     <br>
+                    <!-- 点赞 -->
+                    <a th:href="@{'/star/'+${question.id}}" class="community-menu"
+                       th:if="${session.user != null}">
+                        <img src="/images/star.png" aria-hidden="true" style="height: 22px;">点赞</img>
+                    </a>
                     <!-- 编辑 -->
                     <a th:href="@{'/publish/'+${question.id}}" class="community-menu"
                        th:if="${session.user != null && session.user.id == question.creator}">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true">编辑</span>
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true">编辑&nbsp;</span>
                     </a>
                 </div>
             </div>

@@ -58,6 +58,7 @@
                     </span>
                     <br>
                     <span class="text-desc">
+                        <span th:text="${question.likeCount}"></span>个点赞&nbsp;
                         <span th:text="${question.commentCount}"></span>个回复&nbsp;
                         <span th:text="${question.viewCount}"></span>次浏览&nbsp;
                         <span th:text="${#dates.format(question.gmtCreate, 'yyyy-MM-dd HH:mm')}"></span>
@@ -94,11 +95,11 @@
         </div>
         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
             <h3>热门话题</h3>
-<!--            <ul class="list-group">-->
-<!--                <li class="list-group-item" th:each="related:${topQuestions}">-->
-<!--                    <a th:href="@{'/question/'+${related.id}}" th:text="${related.title}"></a>-->
-<!--                </li>-->
-<!--            </ul>-->
+            <ul class="list-group">
+                <li class="list-group-item" th:each="topQuestion:${topQuestions}">
+                    <a th:href="@{'/question/'+${topQuestion.id}}" th:text="${topQuestion.title}"></a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

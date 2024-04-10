@@ -45,4 +45,13 @@ public class QuestionController {
         model.addAttribute("relatedQuestions", relatedQuestions);
         return "question";
     }
+
+    @GetMapping("/star/{id}")
+    public String updateStar(@PathVariable(name = "id") Long id) {
+
+        // 取得点赞问题的ID, 进行更新即可
+        questionService.updateLikeCount(id);
+        // 完成点赞操作后重定向到原页面
+        return "redirect:/question/" + id;
+    }
 }

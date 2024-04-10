@@ -183,4 +183,13 @@ public class QuestionService {
 
         return questionDTOList;
     }
+
+    public void updateLikeCount(Long id) {
+        questionMapper.updateLikecount(id);
+    }
+
+    public List<Question> getTopList() {
+        List<Question> topQuestionList = questionMapper.getTopList();
+        return topQuestionList;
+    }
 }

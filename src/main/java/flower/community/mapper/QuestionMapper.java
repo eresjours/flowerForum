@@ -60,4 +60,10 @@ public interface QuestionMapper {
 
     @Select("SELECT COUNT(*) FROM QUESTION WHERE TITLE LIKE CONCAT('%', #{search}, '%')")
     Integer countBySearch(String search);
+
+    @Update("UPDATE QUESTION SET LIKE_COUNT = LIKE_COUNT + 1 WHERE ID = #{id};")
+    void updateLikecount(Long id);
+
+    @Select("SELECT * FROM QUESTION WHERE LIKE_COUNT > 0 ORDER BY LIKE_COUNT DESC LIMIT 5")
+    List<Question> getTopList();
 }
