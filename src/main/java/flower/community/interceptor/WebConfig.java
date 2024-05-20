@@ -16,6 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private SessionInterceptor sessionInterceptor;
 
+    // 指定该拦截器对所有URL路径都有效,意味着对所有进入应用的HTTP请求,都会先经过sessionInterceptor这个拦截器的处理
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(sessionInterceptor).addPathPatterns("/**");

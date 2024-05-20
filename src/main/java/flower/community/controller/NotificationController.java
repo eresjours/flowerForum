@@ -25,6 +25,14 @@ public class NotificationController {
     @Autowired
     private CommentService commentService;
 
+    /**
+     * 处理通知详情页面的 GET 请求
+     * 通过 URL 中的 id 参数获取对应的通知详情
+     *
+     * @param request HTTP 请求对象
+     * @param id      通知的 ID
+     * @return 根据通知类型重定向到对应页面
+     */
     @GetMapping("/notification/{id}") //占位符方式传参
     private String profile(HttpServletRequest request,
                            @PathVariable(name = "id") Long id) {
@@ -34,6 +42,7 @@ public class NotificationController {
         if (user == null)
             return "redirect:/";
 
+        // 将通知设置为已读
         NotificationDTO notificationDTO = notificationService.read(id, user);
         if (NotificationTypeEnum.REPLAY_QUESTION.getType() == notificationDTO.getType()) {
 

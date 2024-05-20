@@ -17,7 +17,7 @@ var Paul_Pio = function (prop) {
         menu: document.querySelector(".pio-container .pio-action"),
         canvas: document.getElementById("pio"),
         body: document.querySelector(".pio-container"),
-        root: document.location.protocol +'//' + document.location.hostname +'/'
+        root: "http://localhost:8887"
     };
 
     /* - 方法 */
@@ -50,7 +50,7 @@ var Paul_Pio = function (prop) {
             clearTimeout(this.t);
             this.t = setTimeout(function () {
                 dialog.classList.remove("active");
-            }, 3000);
+            }, 5000);
         },
         // 移除方法
         destroy: function () {
@@ -73,7 +73,8 @@ var Paul_Pio = function (prop) {
         info: modules.create("span", {class: "pio-info"}),
         sentence: modules.create("span", {class: "pio-sentence"}),
         //close: modules.create("span", {class: "pio-close"}),
-
+        environmentalInfo: modules.create("span", {class: "pio-environmentalInfo"}),
+        watering: modules.create("span", {class: "pio-watering"}),
         show: modules.create("div", {class: "pio-show"})
     };
 
@@ -81,11 +82,97 @@ var Paul_Pio = function (prop) {
     current.body.appendChild(dialog);
     current.body.appendChild(elements.show);
 
+
+    // 定时轮询获取植物环境数据数据
+    function monitorPlantEnvironment() {
+        // 记录连续为0的光照强度次数
+        let zeroLightCount = 0;
+
+        // 定时轮询获取数据
+        function pollData() {
+            fetch('/figure/getInfo', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 在这里添加其他请求头（如认证信息等）
+                }
+            })
+                .then(response => {
+                    // 检查请求是否成功
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch data');
+                    }
+                    // 解析 JSON 响应数据
+                    return response.json();
+                })
+                .then(data => {
+                    // 成功获取到数据后的处理
+                    console.log('成功获取到数据:', data);
+                    // 获取data部分
+                    const plantData = data.data;
+                    plantData.forEach(item => {
+                        // ${item.id}: ${item.current_value}
+                        switch (item.id) {
+                            case 'light':
+                                console.log(item.id, item.current_value);
+                                if (item.current_value === 1) {
+                                    // 光照强度为0时增加计数
+                                    zeroLightCount++;
+                                    if (zeroLightCount >= 10) {
+                                        console.log("长时间缺乏光照！");
+                                        // 这里可以执行长时间缺乏光照时的操作，比如提示用户或者触发其他事件
+                                        // 重置计数器
+                                        zeroLightCount = 0;
+                                    }
+                                }
+                                break;
+                            case 'humidity':
+                                console.log(item.id, item.current_value);
+                                if (item.current_value > 70) {
+                                    console.log("水太多了，少浇点！", item.current_value);
+                                    // 这里可以执行湿度过高时的操作，比如提示用户或者触发其他事件
+                                    // // 获取显示植物信息的元素
+                                    // const dialog = document.querySelector('.pio-dialog');
+                                    modules.render("水太多了，少浇点！");
+                                    // 将每个数据项显示在文本中
+                                    // dialog.innerText = item.id + item.current_value;
+                                } else if (item.current_value < 20) {
+                                    console.log("水太少了，多浇点！", item.current_value);
+                                    // 这里可以执行湿度过低时的操作，比如提示用户或者触发其他事件
+                                }
+                                break;
+                            case 'temperature':
+                                console.log(item.id, item.current_value);
+                                if (item.current_value > 50) {
+                                    console.log('太热了！', item.current_value);
+                                    // 这里可以执行湿度过高时的操作，比如提示用户或者触发其他事件
+                                } else if (item.current_value < 10) {
+                                    console.log('有点凉了！', item.current_value);
+                                    // 这里可以执行湿度过低时的操作，比如提示用户或者触发其他事件
+                                }
+                                break;
+                        }
+                    });
+                })
+                .catch(error => {
+                    // 请求失败时的处理
+                    console.error('获取数据失败:', error);
+                    // 这里可以处理获取数据失败的情况，比如显示错误信息
+                });
+        }
+
+        // 设置定时器，每隔一定时间调用 pollData 函数
+        const pollingInterval = 50000; // 50秒钟
+        setInterval(pollData, pollingInterval);
+    }
+
     /* - 提示操作 */
         var action = {
+
         // 欢迎
          welcome: function () {
 
+             /*获取用户信息*/
              fetch('/figure', {
                  method: 'GET',
                  headers: {
@@ -104,6 +191,8 @@ var Paul_Pio = function (prop) {
                  .then(data => {
                      // 成功获取用户信息后的处理
                      console.log('成功获取到用户信息:', data);
+                     // 开启轮询获取植物信息
+                     monitorPlantEnvironment();
                      if(document.referrer !== "" && document.referrer.indexOf(current.root) === -1){
                          var referrer = document.createElement('a');
                          referrer.href = document.referrer;
@@ -157,10 +246,11 @@ var Paul_Pio = function (prop) {
                 modules.render(prop.content.touch || ["你在做什么？","工作这么久了休息一会吧", "带我出去晒晒太阳吧"]);
             };
         },
-        // 右侧按钮
+        // 按钮
          buttons: function () {
              // 返回首页
              elements.home.onclick = function () {
+                 // location.href用于获取当前页面的 URL，并将浏览器重定向到 current.root 指定的 URL。
                  location.href = current.root;
              };
              elements.home.onmouseover = function () {
@@ -180,10 +270,10 @@ var Paul_Pio = function (prop) {
 
              // 关于我
              elements.info.onclick = function () {
-                 window.open("http://localhost:8887");
+                 window.open("https://github.com/eresjours/flowerForum");
              };
              elements.info.onmouseover = function () {
-                 modules.render("想了解更多关于我的信息吗？");
+                 modules.render("想了解更多关于我的信息吗？(项目源码地址)");
              };
              current.menu.appendChild(elements.info);
 
@@ -202,8 +292,85 @@ var Paul_Pio = function (prop) {
                  };
                  current.menu.appendChild(elements.sentence);
 
+             // 植物环境信息
+             elements.environmentalInfo.onclick = function () {
+                 fetch('/figure/getInfo', {
+                     method: 'GET',
+                     headers: {
+                         'Content-Type': 'application/json',
+                         // 在这里添加其他请求头（如认证信息等）
+                     }
+                 })
+                     .then(response => {
+                         // 检查请求是否成功
+                         if (!response.ok) {
+                             throw new Error('Failed to fetch plant info');
+                         }
+                         // 解析 JSON 响应数据
+                         return response.json();
+                     })
+                     .then(data => {
+                         // 成功获取到植物信息后的处理
+                         // console.log('成功获取到植物信息:', data);
+                         // 获取data部分
+                         const plantData = data.data;
+                         // 获取显示植物信息的元素
+                         const dialog = document.querySelector('.pio-dialog');
+                         // 清空 .pio-dialog 元素中的内容
+                         dialog.innerText = '';
+                         // 将每个数据项显示在文本中
+                         plantData.forEach(item => {
+                             dialog.innerText += `${item.id}: ${item.current_value}\n`;
+                         });
+                     })
+                     .catch(error => {
+                         // 请求失败时的处理
+                         console.error('获取植物信息失败:', error.message);
+                     });
+             };
+             elements.environmentalInfo.onmouseover = function () {
+                 modules.render("想查看植物的当前信息吗?");
+             };
+             current.menu.appendChild(elements.environmentalInfo);
 
-             // 关闭看板娘
+             //浇水
+             elements.watering.onclick = function () {
+                 fetch('/figure/watering', {
+                     method: 'GET',
+                     headers: {
+                         'Content-Type': 'application/json',
+                         // 在这里添加其他请求头（如认证信息等）
+                     }
+                 })
+                     .then(response => {
+                         // 检查请求是否成功
+                         if (!response.ok) {
+                             throw new Error('Failed to fetch plant info');
+                         }
+                         // 解析 JSON 响应数据
+                         return response.json();
+                     })
+                     .then(data => {
+                         // 成功获取到返回信息后的处理
+                         // console.log('成功获取到返回信息:', data);
+                         // 获取data部分
+                         if (data.error === "succ") {
+                             modules.render("浇水成功", data.error);
+                         } else {
+                             modules.render("浇水失败", data.error);
+                         }
+                     })
+                     .catch(error => {
+                         // 请求失败时的处理
+                         console.error('浇水动作失败:', error.message);
+                     });
+             };
+             elements.watering.onmouseover = function () {
+                 modules.render("需要浇水吗?");
+             };
+             current.menu.appendChild(elements.watering);
+
+             // 关闭模型
 //             elements.close.onclick = function () {
 //                 modules.destroy();
 //             };
@@ -239,6 +406,8 @@ var Paul_Pio = function (prop) {
             });
         }
     };
+
+
 
     /* - 运行 */
     var begin = {
@@ -280,7 +449,9 @@ var Paul_Pio = function (prop) {
         if(!(prop.hidden&& modules.isMobile())){
             if(!onlyText){
                 action.welcome();
-                loadlive2d("pio", prop.model[Math.floor(Math.random()*(prop.model.length))]);
+                // 初始化，随机加载模型
+                // loadlive2d("pio", prop.model[Math.floor(Math.random()*(prop.model.length))]);
+                loadlive2d("pio", prop.model[5]);
             }
 
             switch (prop.mode){

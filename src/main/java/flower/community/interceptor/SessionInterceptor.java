@@ -27,6 +27,15 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Autowired
     private NotificationService notificationService;
 
+    /**
+     * 拦截器的预处理方法,在请求处理之前执行
+     *
+     * @param request  HTTP请求对象
+     * @param response HTTP响应对象
+     * @param handler  处理器对象
+     * @return 是否继续执行请求处理
+     * @throws Exception 异常
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         /*
@@ -53,11 +62,21 @@ public class SessionInterceptor implements HandlerInterceptor {
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
+    /*
+        postHandle 会在 请求处理完成后 执行,即在控制器方法执行完成后执行。
+        该方法可以用于进行一些资源清理、统计或日志记录等操作。
+        它只是简单地调用了父类的 postHandle 方法,没有执行其他逻辑。
+     */
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
     }
 
+    /*
+        afterCompletion 会在整个请求处理完成后执行,即在视图渲染完成后执行。
+        该方法可以用于进行一些资源清理、统计或日志记录等操作。
+        它只是简单地调用了父类的 afterCompletion 方法,没有执行其他逻辑。
+     */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         HandlerInterceptor.super.afterCompletion(request, response, handler, ex);

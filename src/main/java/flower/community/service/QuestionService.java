@@ -4,14 +4,17 @@ import flower.community.Datatransfermodel.PaginationDTO;
 import flower.community.Datatransfermodel.QuestionDTO;
 import flower.community.exception.CustomizeErrorCode;
 import flower.community.exception.CustomizeException;
+import flower.community.mapper.CommentMapper;
 import flower.community.mapper.QuestionMapper;
 import flower.community.mapper.UserMapper;
+import flower.community.model.Comment;
 import flower.community.model.Question;
 import flower.community.model.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +32,19 @@ public class QuestionService {
     private QuestionMapper questionMapper;
 
     @Autowired
+    private CommentMapper commentMapper;
+
+    @Autowired
     private UserMapper userMapper;
 
+    /**
+     * 获取问题列表,支持搜索和分页功能
+     *
+     * @param search 搜索关键词,为空则返回全部问题
+     * @param page 页码
+     * @param size 每页数据量
+     * @return 包含问题列表和分页信息的 PaginationDTO 对象
+     */
     public PaginationDTO list(String search, Integer page, Integer size) {
 
         Integer totalCount;
@@ -88,6 +102,14 @@ public class QuestionService {
         return paginationDTO;
     }
 
+    /**
+     * 获取指定用户的问题列表并分页
+     *
+     * @param userId 用户 ID
+     * @param page 页码
+     * @param size 每页数据量
+     * @return 包含问题列表和分页信息的 PaginationDTO 对象
+     */
     /* 根据用户ID获取所有问题并分页 */
     public PaginationDTO<QuestionDTO> list(Long userId, Integer page, Integer size) {
         PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
@@ -128,6 +150,13 @@ public class QuestionService {
         return paginationDTO;
     }
 
+    /**
+     * 根据问题 ID 获取问题详情
+     *
+     * @param id 问题 ID
+     * @return 包含问题详情和创建者信息的 QuestionDTO 对象
+     * @throws CustomizeException 如果查询不到对应的问题,抛出该异常
+     */
     public QuestionDTO getById(Long id) {
         Question question = questionMapper.getById(id);
         if (question == null) {
@@ -141,6 +170,12 @@ public class QuestionService {
         return questionDTO;
     }
 
+    /**
+     * 创建或更新问题
+     *
+     * @param question 要创建或更新的问题对象
+     * @throws CustomizeException 如果更新问题失败,抛出该异常
+     */
     public void createOrUpdate(Question question) {
 
         if (question.getId() == null) { // 如果 id 为空，说明是第一次创建
@@ -164,9 +199,12 @@ public class QuestionService {
     }
 
 
-    /*
-        根据标签搜索相关问题
-    */
+    /**
+     * 根据问题标签查询相关问题
+     *
+     * @param questionDTO 包含问题标签的 QuestionDTO 对象
+     * @return 查询到的相关问题列表
+     */
     public List<QuestionDTO> selectRelated(QuestionDTO questionDTO) {
         // 如果标签是空的
         if (StringUtils.isBlank(questionDTO.getTag())) {
@@ -184,12 +222,40 @@ public class QuestionService {
         return questionDTOList;
     }
 
+    /**
+     * 更新指定问题的点赞数
+     *
+     * @param id 问题ID
+     */
     public void updateLikeCount(Long id) {
         questionMapper.updateLikecount(id);
     }
 
+    /**
+     * 获取点赞数最高的问题列表
+     *
+     * @return 点赞数最高的问题列表
+     */
     public List<Question> getTopList() {
         List<Question> topQuestionList = questionMapper.getTopList();
         return topQuestionList;
+    }
+
+    @Transactional  //添加事务功能，当对数据库的操作有一条错误，全部进行回滚
+    public void deleteById(Long id) {
+        // 删除需要删除的问题
+        questionMapper.deleteById(id);
+//        /*
+//            同时将问题下的回复全部删除
+//         */
+//        // 1.先获取所有回复的ID
+//        List<Comment> comments = commentMapper.selectByQuestionID(id);
+//        // 2.遍历每条回复，删除他们的二级回复
+//        for (Comment comment : comments) {
+//            // 获取所有二级回复
+//            commentMapper.delete
+//        }
+//        // 还需要将响应回复的通知也全部删除
+
     }
 }

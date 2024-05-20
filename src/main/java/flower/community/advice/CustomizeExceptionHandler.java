@@ -24,6 +24,15 @@ public class CustomizeExceptionHandler {
     /*
         跳转页面和返回json不能同时存在，采用手写方式实现
      */
+    /**
+     * 统一处理应用程序中抛出的异常
+     *
+     * @param e                 抛出的异常对象
+     * @param model             用于在页面上显示错误信息
+     * @param request           HTTP 请求对象
+     * @param response          HTTP 响应对象
+     * @return 如果是 JSON 请求,则返回 null;否则返回一个 ModelAndView 对象,用于渲染错误页面
+     */
     @ExceptionHandler(Exception.class)
     ModelAndView handle(Throwable e,
                   Model model,

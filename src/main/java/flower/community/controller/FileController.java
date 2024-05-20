@@ -12,9 +12,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class FileController {
 
-    /* todo
-    待完成
-    处理图片上传 */
+    /*
+    处理图片上传
+    方法一：对象方式存储
+    方法一 较好，但需要服务器先不实现了
+
+    方法二：转换为64编码，存入数据库
+    */
 
     @RequestMapping("/file/upload")
     @ResponseBody

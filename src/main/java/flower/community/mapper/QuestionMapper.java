@@ -66,4 +66,7 @@ public interface QuestionMapper {
 
     @Select("SELECT * FROM QUESTION WHERE LIKE_COUNT > 0 ORDER BY LIKE_COUNT DESC LIMIT 5")
     List<Question> getTopList();
+
+    @Delete("DELETE FROM QUESTION WHERE ID = #{id}")
+    void deleteById(Long id);
 }

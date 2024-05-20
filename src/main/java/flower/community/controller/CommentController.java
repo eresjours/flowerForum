@@ -25,9 +25,14 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    /*
-        评论 不需要返回值
-        页面提交json格式的数据发送到服务端，存入数据库
+
+    /**
+     * 添加评论
+     * 页面提交json格式的数据发送到服务端，存入数据库
+     *
+     * @param commentCreateDTO 前端传递的评论数据
+     * @param request          HTTP 请求对象
+     * @return 返回操作结果
      */
     @ResponseBody //将返回的数据自动反序列化为json形式返回前端
     @RequestMapping(value = "/comment", method = RequestMethod.POST) //设置接口访问的url，同时设置只允许post请求
@@ -57,8 +62,11 @@ public class CommentController {
         return ResultDTO.okOf();    // 返回前端的数据
     }
 
-    /*
-        二级评论 返回list
+    /**
+     * 获取二级评论列表
+     *
+     * @param id 一级评论ID
+     * @return 返回list 包含二级评论列表的响应结果
      */
     @ResponseBody //将返回的数据自动反序列化为json形式返回前端
     @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET) //设置接口访问的url，同时设置只允许post请求

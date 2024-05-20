@@ -15,6 +15,11 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * 创建或更新用户信息
+     *
+     * @param user 用户对象
+     */
     public void createOrUpdate(User user) {
         //根据传入的accountId在数据库中查找是否存在对应用户
         User dbUser = userMapper.findByAccountId(user.getAccountId());

@@ -39,6 +39,14 @@ public class AuthorizeController {
     @Autowired
     private UserService userService;
 
+    /**
+     * GitHub 授权回调方法
+     *
+     * @param code     GitHub 授权后返回的授权码
+     * @param state    GitHub 授权后返回的状态码
+     * @param response HTTP 响应对象,用于设置 Cookie
+     * @return 如果授权成功,重定向到主页;否则重新登录
+     */
     @GetMapping("/callback")
     public String callBack(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
@@ -85,6 +93,15 @@ public class AuthorizeController {
     }
 
 
+    /**
+     * 退出登录
+     * 移除session中的user
+     * 移除cookie
+     *
+     * @param request  HTTP 请求对象
+     * @param response HTTP 响应对象
+     * @return 重定向到主页
+     */
     // 退出登录
     @GetMapping("/logout")
     public String logout(HttpServletRequest request,

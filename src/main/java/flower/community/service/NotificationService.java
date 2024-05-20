@@ -26,6 +26,14 @@ public class NotificationService {
     @Autowired
     private NotificationMapper notificationMapper;
 
+    /**
+     * 获取指定用户的通知列表,并进行分页处理
+     *
+     * @param userId 用户 ID
+     * @param page   页码
+     * @param size   每页数据量
+     * @return 包含通知列表和分页信息的 PaginationDTO 对象
+     */
     public PaginationDTO list(Long userId, Integer page, Integer size) {
         PaginationDTO<NotificationDTO> paginationDTO = new PaginationDTO<>();
         Integer totalCount = notificationMapper.countByReceiver(userId);    //通过SQL语句获取question总数
@@ -68,12 +76,24 @@ public class NotificationService {
         return paginationDTO;
     }
 
-    /*未读回复统计*/
+    /**
+     * 获取指定用户的未读通知数量
+     *
+     * @param id 用户 ID
+     * @return 未读通知数量
+     */
     public Long unreadCount(Long id) {
         return notificationMapper.countUnreadByReceiver(id);
     }
 
-    /*设定已读*/
+    /**
+     * 将指定的通知标记为已读,并返回该通知的详细信息
+     *
+     * @param id   通知 ID
+     * @param user 当前登录用户
+     * @return 通知详细信息的 NotificationDTO 对象
+     * @throws CustomizeException 如果通知不存在或用户验证失败
+     */
     public NotificationDTO read(Long id, User user) {   //评论的id 和 当前登录的用户
         Notification notification = notificationMapper.selectByPrimaryKey(id);
 

@@ -26,6 +26,17 @@ public class ProfileController {
     @Autowired
     private NotificationService notificationService;
 
+    /**
+     * 处理个人中心页面的 GET 请求
+     * 根据请求参数 action 的不同值,展示用户提出的问题列表或最新回复通知列表
+     *
+     * @param request HTTP 请求对象
+     * @param action  请求操作,可选值为 "questions" 或 "replies"
+     * @param model   Spring MVC 模型对象,用于传递数据到视图
+     * @param page    分页参数,指定当前页码,默认为 1
+     * @param size    分页参数,指定每页显示的记录数,默认为 5
+     * @return 个人中心页面视图
+     */
     @GetMapping("/profile/{action}") //占位符方式传参
     private String profile(HttpServletRequest request,
                            @PathVariable(name = "action") String action,

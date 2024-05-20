@@ -16,6 +16,8 @@
 <body>
 <!-- 导航栏部分 -->
 <div th:insert="~{navigation :: nav}"></div>
+<!-- 插入虚拟形象 -->
+<div th:insert="~{figure :: figure}"></div>
 <!-- 主体部分 -->
 <div class="container-fluid main profile">
     <div class="row">
@@ -102,5 +104,6 @@
         </div>
     </div>
 </div>
+<div th:insert="~{footer :: foot}"></div>
 </body>
 </html>

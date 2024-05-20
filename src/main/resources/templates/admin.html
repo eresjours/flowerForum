@@ -1,7 +1,7 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>花卉交流</title>
+    <title>Admin</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"/>
@@ -26,16 +26,37 @@
 </script>
 <body>
 <!-- 插入导航栏 -->
-<div th:insert="~{navigation :: nav}"></div>
-<!-- 插入虚拟形象 -->
-<div th:insert="~{figure :: figure}"></div>
-<div class="jumbotron">
-    <div class="jumbotron-text">
-        <h1>Hello, world!</h1>
-        <p>一个专注于植物园艺爱好者的交流社区，可以分享经验、观点和疑问</p>
+<div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">花卉交流</span>
+        </button>
+        <a class="navbar-brand" href="/"><span class="glyphicon glyphicon-leaf" aria-hidden="true"></span>&nbsp;花卉交流</a>
     </div>
-<!--    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>-->
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <form class="navbar-form navbar-left  search bar" action="/admin" method="get">
+            <div class="form-group">
+                <input type="text" class="form-control" name="search" placeholder="搜索问题">
+                <button type="submit" class="btn btn-default">搜索</button>
+            </div>
+        </form>
+        <!-- todo -->
+<!--        <a href="/publish" style="float: right; padding-top: 15px;">发布公告</a>-->
+    </div>
 </div>
+<!-- 主体部分 -->
+<!-- 欢迎巨幕 -->
+<div class="jumbotron">
+    <div class="container">
+        <div class="jumbotron-text">
+            <h1>Hello, Admin!</h1>
+        </div>
+    </div>
+</div>
+<!-- 所有问题 -->
 <div class="container-fluid main">
     <div class="row">
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
@@ -49,9 +70,9 @@
                 </div>
                 <div class="media-body">
                     <h4 class="media-heading">
-                        <a th:href="@{'question/'+${question.id}}" th:text="${question.title}"></a>
+                        <a href="#" th:text="${question.title}"></a>
                     </h4>
-<!--                    <span class="label label-info" th:text="${question.tag}"></span>-->
+                    <!--                    <span class="label label-info" th:text="${question.tag}"></span>-->
                     <span class="label label-info" th:each="tag : ${question.tag.split(',')}">
                         <span class="glyphicon glyphicon-tags"></span>
                         <span class="label label-info" th:text="${tag}"></span>
@@ -63,6 +84,10 @@
                         <span th:text="${question.viewCount}"></span>次浏览&nbsp;
                         <span th:text="${#dates.format(question.gmtCreate, 'yyyy-MM-dd HH:mm')}"></span>
                     </span>
+                    <!-- 删除 -->
+                    <a th:href="@{'/deleteByAdmin/'+${question.id}}" class="community-menu">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true">删除&nbsp;</span>
+                    </a>
                 </div>
             </div>
             <nav aria-label="Page navigation" style="text-align: center;">
@@ -97,12 +122,13 @@
             <h3>热门话题</h3>
             <ul class="list-group">
                 <li class="list-group-item" th:each="topQuestion:${topQuestions}">
-                    <a th:href="@{'/question/'+${topQuestion.id}}" th:text="${topQuestion.title}"></a>
+                    <a href="#" th:text="${topQuestion.title}"></a>
                 </li>
             </ul>
         </div>
     </div>
 </div>
-<div th:insert="~{footer :: foot}"></div>
+<!-- 页脚 -->
+<div th:insert="~{footer :: foot}" style="padding-top: 260px"></div>
 </body>
 </html>

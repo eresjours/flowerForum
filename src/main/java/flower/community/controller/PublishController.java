@@ -24,6 +24,13 @@ public class PublishController {
     @Autowired
     private QuestionService questionService;
 
+    /**
+     * 处理问题编辑界面展示的 GET 请求处理器方法
+     *
+     * @param id     问题 ID
+     * @param model  Spring MVC 模型对象,用于传递数据到视图
+     * @return 问题页面视图
+     */
     @GetMapping("publish/{id}")
     public String edit(@PathVariable(name = "id") Long id,
                        Model model){
@@ -41,6 +48,17 @@ public class PublishController {
         return "publish";
     }
 
+    /**
+     * 处理问题发布请求的 POST 请求处理器方法
+     *
+     * @param title       问题标题
+     * @param description 问题描述
+     * @param tag         问题标签
+     * @param id          问题 ID,用于编辑问题时传递
+     * @param request     HTTP 请求对象
+     * @param model       Spring MVC 模型对象,用于传递数据到视图
+     * @return 根据操作结果重定向到不同页面
+     */
     @PostMapping("/publish")
     public String doPublish(
             @RequestParam(value = "title", required = false) String title,
