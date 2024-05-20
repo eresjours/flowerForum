@@ -11,7 +11,8 @@ pom.xml 是 Maven 管理项目构建过程的关键配置文件,定义了项目�
 ## 项目结构
 
 ### cmcc
-cmcc 为One net官方提供的Java-HTTP-SDK
+cmcc 为One net官方提供的Java-HTTP-SDK  
+`https://github.com/cm-heclouds/JAVA-HTTP-SDK` 自行获取
 
 ### flower
 flower 下存放所有项目后端代码
